@@ -32,11 +32,9 @@ Este script oferece várias funcionalidades chave para a manipulação eficiente
 Este projeto utiliza Docker para executar o PostgreSQL e o Metabase de forma isolada e configurável. Siga os passos abaixo para configurar e executar os contêineres:
 
 1. **PostgreSQL**:
-   ```bash
 docker run --name postgres01 -e POSTGRES_PASSWORD=123 -p 5432:5432 --network minha-rede -d postgres
 
 2. **Metabase**:
-   ```bash
 docker run -d -p 3000:3000 --name metabase --network minha-rede -d metabase/metabase
 
 
