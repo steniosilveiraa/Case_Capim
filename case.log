@@ -1,0 +1,8 @@
+2024-04-19 12:15:15,066 - INFO - Início do processo de carga de dados.
+2024-04-19 12:15:15,108 - INFO - Conexão com o banco de dados estabelecida com sucesso.
+2024-04-19 12:15:15,110 - INFO - Data frame criado com sucesso.
+2024-04-19 12:15:15,116 - INFO - Processo de remoção de dados duplicados aplicado.
+2024-04-19 12:15:15,116 - INFO - Iniciando o insert na tabela.
+2024-04-19 12:15:15,142 - INFO - Conexão com o banco de dados estabelecida com sucesso.
+2024-04-19 12:15:15,146 - INFO - Dados carregados no Postgres.
+2024-04-19 12:15:15,146 - INFO - Novos registros inseridos com sucesso.
