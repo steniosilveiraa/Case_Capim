@@ -4,7 +4,6 @@ import psycopg2
 import json
 import schedule
 import time
-import os
 from psycopg2.extras import execute_batch
 
 
@@ -19,9 +18,6 @@ logging.basicConfig(
 
 # Leitura do arquivo
 json_file_path = r"C:\Users\stenio.da.s.alves\PycharmProjects\CaseCapim\json_for_case_delta.json"
-
-# Acessa a variável de ambiente e armazena em uma variável Python
-password1 = os.getenv('DATABASE_PASSWORD')
 
 def connect_to_db():
     """ Estabelece conexão com o banco de dados PostgreSQL"""
