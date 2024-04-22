@@ -6,8 +6,6 @@ import schedule
 import time
 from psycopg2.extras import execute_batch
 
-
-
 # Configurando o logging
 logging.basicConfig(
     #filename='case.log',  # Nome do arquivo de log
