@@ -46,5 +46,3 @@ docker run -d -p 3000:3000 --name metabase --network minha-rede -d metabase/meta
 
 ### Dados no PostgreSQL
    ![Dashboard Metabase](https://github.com/steniosilveiraa/Case_Capim/blob/master/images/Postgres.png)
-
-<img width="680" alt="Dados PostgreSQL" src="https://github.com/steniosilveiraa/Case_Capim/blob/master/images/Postgres.png">   
