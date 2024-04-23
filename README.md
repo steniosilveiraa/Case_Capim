@@ -20,7 +20,7 @@ Este script oferece várias funcionalidades chave para a manipulação eficiente
 ## Tecnologias Utilizadas
 - Python 3.8
 - PostgreSQL
-- Bibliotecas Python: psycopg2, pandas, json, logging, schedule, time
+- Bibliotecas Python: psycopg2, pandas, json, logging, schedule, time, os
 
 ### Pré-requisitos
 - Python 3.8 ou superior
@@ -31,10 +31,15 @@ Este script oferece várias funcionalidades chave para a manipulação eficiente
 ## Configuração do Docker
 Este projeto utiliza Docker para executar o PostgreSQL e o Metabase de forma isolada e configurável. Siga os passos abaixo para configurar e executar os contêineres:
 
-1. **PostgreSQL**:
+1. **Criar uma rede Docker**:
+```bash
+docker network create minha-rede
+```
+
+3. **PostgreSQL**:
 docker run --name postgres01 -e POSTGRES_PASSWORD=123 -p 5432:5432 --network minha-rede -d postgres
 
-2. **Metabase**:
+4. **Metabase**:
 docker run -d -p 3000:3000 --name metabase --network minha-rede -d metabase/metabase
 
 
