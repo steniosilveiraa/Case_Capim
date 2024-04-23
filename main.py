@@ -5,6 +5,7 @@ import json
 import schedule
 import time
 from psycopg2.extras import execute_batch
+import os
 
 # Configurando o logging
 logging.basicConfig(
@@ -17,13 +18,16 @@ logging.basicConfig(
 # Leitura do arquivo
 json_file_path = r"C:\Users\stenio.da.s.alves\PycharmProjects\CaseCapim\json_for_case_delta.json"
 
+# Obter senha do ambiente
+password = os.getenv('DB_PASSWORD')
+
 def connect_to_db():
     """ Estabelece conexão com o banco de dados PostgreSQL"""
     try:
         conn = psycopg2.connect(
             dbname='postgres',
             user='postgres',
-            password='123',
+            password=password, # Usar a senha obtida da variável de ambiente
             host='localhost',
             port='5432'
         )
@@ -38,9 +42,15 @@ def load_json_to_df(json_file_path):
     """ Carrega dados do arquivo JSON e retorna um DataFrame normalizado. """
     try:
         with open(json_file_path, 'r', encoding='utf-8') as json_file:
+            #Gera lista de dicionários a partir dos dados do json
             data = json.load(json_file)
+
+            #Transforma dados aninhados em tabela plana, criando colunas para cada campo
             normalized_data = pd.json_normalize(data)
+
+            # Transforma a tabela plana em um dataframe
             df = pd.DataFrame(normalized_data)
+
             return df
     except Exception as e:
         logging.error(f"Erro ao carregar e normalizar JSON: {e}")
@@ -49,7 +59,10 @@ def load_json_to_df(json_file_path):
 def get_existing_ids(cursor):
     """ Retorna um conjunto de IDs já existentes na tabela 'tb_cliente' do banco. """
     cursor.execute("SELECT id FROM tb_cliente")
+
+    #Listar resultado da consulta
     ids_table = set(id[0] for id in cursor.fetchall())
+
     return ids_table
 
 def filter_new_records(df, existing_ids):
@@ -59,14 +72,14 @@ def filter_new_records(df, existing_ids):
 
 def drop_dupl(new_records):
     """ Remove dados duplicados do DataFrame baseado na coluna 'id'. """
-    new_records1 = new_records.drop_duplicates(subset=['id'], keep='first')  # Ajuste o subset conforme as colunas desejadas
+    new_records_dd = new_records.drop_duplicates(subset=['id'], keep='first')  # Ajuste o subset conforme as colunas desejadas
     logging.info("Processo de remoção de dados duplicados aplicado.")
-    return new_records1
+    return new_records_dd
 
-def insert_data(new_records1):
+def insert_data(new_records_dd):
     """ Insere registros no banco de dados na tabela 'tb_cliente'. """
     columns = ['id', 'nome', 'idade', 'email', 'telefone', 'endereco.logradouro', 'endereco.numero', 'endereco.bairro','endereco.cidade', 'endereco.estado', 'endereco.cep']
-    data_tuples = [tuple(x) for x in new_records1[columns].values]
+    data_tuples = [tuple(x) for x in new_records_dd[columns].values]
     insert_query = 'INSERT INTO tb_cliente ( id, nome, idade, email, telefone, logradouro, numero, bairro, cidade, estado, cep) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
     conn = connect_to_db()
     cur = conn.cursor()
@@ -104,9 +117,9 @@ def main():
         new_records = filter_new_records(df, existing_ids)
 
         if not new_records.empty:
-            new_records1 = drop_dupl(new_records)
+            new_records_dd = drop_dupl(new_records)
             logging.info("Iniciando o insert na tabela.")
-            insert_data(new_records1)
+            insert_data(new_records_dd)
         else:
             logging.info("Nenhum novo registro encontrado para inserção.")
     except Exception as e:
