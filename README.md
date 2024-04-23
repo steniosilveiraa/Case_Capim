@@ -37,11 +37,14 @@ docker network create minha-rede
 ```
 
 3. **PostgreSQL**:
+```bash   
 docker run --name postgres01 -e POSTGRES_PASSWORD=123 -p 5432:5432 --network minha-rede -d postgres
+```
 
-4. **Metabase**:
+5. **Metabase**:
+```bash
 docker run -d -p 3000:3000 --name metabase --network minha-rede -d metabase/metabase
-
+```
 
 ## Visualizações de Dados
    Aqui estão alguns exemplos das visualizações geradas pelo Metabase e uma visão dos dados diretamente do PostgreSQL:
